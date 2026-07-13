@@ -1,5 +1,7 @@
 ## QA Automation Assignment
 
+**Known, deliberate deviation from the literal spec:** the "get user details" API test validates a fixed reqres.in seed user (id `2`) instead of the just-created user. This is not an oversight — `/api/users` on reqres.in is a read-only demo endpoint that never actually persists created records, so `GET` against a freshly created id always returns 404 (confirmed by direct API calls; `PUT`/`PATCH` always echo `200` regardless of id, which is why the update step *can* target the real created id). Full detail below and in `tests/api/testData.js`.
+
 Playwright + JavaScript automation for:
 
 1. **UI** — demoqa.com Book Store, split across three files:
@@ -20,7 +22,7 @@ npm install
 npx playwright install chromium
 ```
 
-Copy `.env` and fill in:
+Copy `.env.example` to `.env` and fill in:
 
 ```
 DEMOQA_USERNAME=<your demoqa.com Book Store username>
